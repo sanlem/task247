@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+	<article class="row">
+		<h1 class="text">{{ object.name }}</h1>
+		<p class="text">{{ object.priority }}</p>
+		<p class="text">{{ object.goal }}</p>				
+		<p class="text">{{ object.status }}</p>				
+		<p class="text">{{ object.owner }}</p>
+		<p class="text">{{ object.description | linebreaks }}</p>
+	</article>
+	{% if comments %}
+		{% for c in comments %}
+			<hr>
+			<article class="row">
+				<p class="text">{{ c.author }}</p>
+				<p class="text">{{ c.text | linebreaks }}</p>
+			</article>
+		{% endfor %}
+	{% endif %}
+	<hr>
+	<form class="form-horizontal" action="{% url 'ticket_comment_add' object.id %}" method='post'>
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit">
+	</form>
+	
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+	<article class="row">
+		<p class="text">{{ object.name }}</p>
+		<p class="text">{{ object.description | linebreaks }}</p>
+		<p class="text">{{ object.deadline }}</p>
+		<p class="text">{{ object.customer }}</p>
+		<p class="text">{{ object.repo_url }}</p>
+	</article>
+	<hr>
+	{% if tickets %}
+		<article class="row">
+			<table class="table table-hover">
+				<th class="row">
+					<td class="col-xs-4">
+						Name
+					</td>
+					<td class="col-xs-2">
+						Priority
+					</td>
+					<td class="col-xs-2">
+						Goal
+					</td>
+					<td class="col-xs-2">
+						Status
+					</td>
+					<td class="col-xs-2">
+						Owner
+					</td>
+				</th>
+			{% for t in tickets %}
+				<tr class="row">
+					<td class="col-xs-4">
+						<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+					</td>
+					<td class="col-xs-2">
+						{{ t.priority }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.goal }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.status }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.owner }}
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</article>
+	{% else %}
+		<article class="row">
+			<p class="text">No tickets.</p>
+		</article>
+	{% endif %}
+	<a href="">Додати тікет</a>
+
+{% endblock %}

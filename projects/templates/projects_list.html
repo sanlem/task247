@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if objects %}
+		{% for obj in objects %}
+			<article class="row">
+				<p class="text">{{ obj.name }}</p>
+				<p class="text">{{ obj.description | linebreaks }}</p>
+				<p class="text">{{ obj.deadline }}</p>
+				<p class="text">{{ obj.customer }}</p>
+				<p class="text">{{ obj.repo_url }}</p>
+				<a href="{% url 'projects_detail' obj.id %}">Детальніше</a>
+			</article>
+			<hr>
+    	{% endfor %}
+    {% else %}
+		<p class="text">No projects.</p>
+	{% endif %}
+
+{% endblock %}
