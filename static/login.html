@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<h2>Login</h2>
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p class="text">Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p class="text">Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+{% if user.is_authenticated %}
+
+<p class="text">You are already logged in, {{ user.username }}.</p>
+
+{% else %}
+
+<form class="form-horizontal" method="post" action="{% url 'login' %}">
+{% csrf_token %}
+{{ form.as_p }}
+
+<button type="submit" class="btn btn-default">Login</button>
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% endif %}
+{% endblock %}
