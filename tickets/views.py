@@ -11,6 +11,7 @@ from rest_framework import viewsets, filters
 import django_filters
 from tickets.serializers import CommentSerializer
 from django.conf import settings
+from tickets.permissions import IsAuthorOrReadOnly
 
 
 class TicketDetail(LoginRequiredMixin, DetailView):
@@ -35,6 +36,7 @@ class CommentFilter(filters.FilterSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+
     serializer_class = CommentSerializer
     queryset = TicketComment.objects.all()
     filter_class = CommentFilter
@@ -45,6 +47,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class AddComment(LoginRequiredMixin, CreateView):
     
+    permission_classes = (IsAuthorOrReadOnly,)
     model = TicketComment
     form_class = TicketCommentForm
     template_name = 'ticketcomment_form.html'

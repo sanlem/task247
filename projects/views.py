@@ -2,16 +2,21 @@ from django.shortcuts import render, get_object_or_404
 from projects.models import Project
 from tickets.models import Ticket
 from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 
 def index(request):
     return render(request, 'index.html', {})
 
+@login_required(login_url = reverse_lazy('login'))
 def projects_list(request):
     projects = Project.objects.all()
     return render(request, 'projects_list.html', {'objects': projects})
 
-class ProjectDetail(DetailView):
+class ProjectDetail(LoginRequiredMixin, DetailView):
     
+    login_url = reverse_lazy('login')
     model = Project
     template_name = 'project_detail.html'
 
