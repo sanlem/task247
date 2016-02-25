@@ -1,30 +1,70 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+{% block extra_head %}
+<script>
+	var apiUrl = "{% url 'comment-list' %}";
+	var ticketId = {{ object.id }};
+	var pageSize = {{ page_size }};
+</script>
+<script src="{% static 'js/comment.js' %}"></script>
+<style type='text/css'>
+	p.comment-text: {
+		white-space: pre-line;
+	}
+</style>
+{% endblock %}
 
 {% block content %}
-
+<section id="ticket">
 	<article class="row">
-		<h1 class="text">{{ object.name }}</h1>
-		<p class="text">{{ object.priority }}</p>
-		<p class="text">{{ object.goal }}</p>				
-		<p class="text">{{ object.status }}</p>				
-		<p class="text">{{ object.owner }}</p>
-		<p class="text">{{ object.description | linebreaks }}</p>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{ object.name }}</h3>
+			</div>
+			<div class="panel-body">
+				<p class="text">Пріоритет: {{ object.priority }}</p>
+				<p class="text">Тип: {{ object.goal }}</p>
+				<p class="text">Статус: {{ object.status }}</p>
+				<p class="text">Власник: {{ object.owner }}</p>
+				<hr>
+				<p class="text">{{ object.description | linebreaks }}</p>
+			</div>
+		</div>
 	</article>
-	{% if comments %}
+</section>
+<section id="comments">
+<!--{% if comments %}
 		{% for c in comments %}
 			<hr>
-			<article class="row">
-				<p class="text">{{ c.author }}</p>
-				<p class="text">{{ c.text | linebreaks }}</p>
+			<article class="row comment" id="{{ c.id }}">
+				<div class="panel panel-default">
+  					<div class="panel-heading">
+    					<h3 class="panel-title">{{ c.author }}</h3>
+  					</div>
+  					<div class="panel-body">
+						<p class="text">{{ c.text | linebreaks }}</p>
+  					</div>
+  				</div>
 			</article>
 		{% endfor %}
-	{% endif %}
+		{% endif %} -->
+	</section>
+	<section class="row">
+		<nav id="pageNav">
+			<ul id="pages" class="pagination">
+			</ul>
+		</nav>
+	</section>
 	<hr>
-	<form class="form-horizontal" action="{% url 'ticket_comment_add' object.id %}" method='post'>
-		{% csrf_token %}
-		{{ form }}
-		<input type="submit">
-	</form>
-	
+	<section>
+		<article id="messages">
+			<div class="alert alert-danger" role="alert"><p class="text" id="message"></p></div>
+		</article>
+		<form id="commentForm" class="form-horizontal">
+			{% csrf_token %}
+			{{ form }}
+			<button id="commentSubmit" type="button" class="btn btn-success">Відправити</button>
+		</form>
+	</section>
 
-{% endblock %}
+	{% endblock %}

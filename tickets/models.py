@@ -45,6 +45,9 @@ class Ticket(models.Model):
     priority = models.CharField(max_length=6, choices=PRIORITY_CHOICES,
                                 default=HIGH)
 
+    def __str__(self):
+        return self.project.name + '#' + str(self.project_id) + ': ' + self.name
+
 
 class TicketComment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL)

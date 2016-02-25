@@ -3,11 +3,18 @@
 {% block content %}
 
 	<article class="row">
-		<p class="text">{{ object.name }}</p>
-		<p class="text">{{ object.description | linebreaks }}</p>
-		<p class="text">{{ object.deadline }}</p>
-		<p class="text">{{ object.customer }}</p>
-		<p class="text">{{ object.repo_url }}</p>
+		<div class="panel panel-default">
+  			<div class="panel-heading">
+    			<h3 class="panel-title">{{ object.name }}</h3>
+  			</div>
+  			<div class="panel-body">
+    			<p class="text">Клієнт: {{ object.customer }}</p>
+    			<p class="text">Дедлайн: {{ object.deadline }}</p>
+    			<p class="text">Репозиторій: {{ object.repo_url }}</p>
+    			<hr>
+    			<p class="text">{{ object.description | linebreaks }}</p>
+  			</div>
+		</div>
 	</article>
 	<hr>
 	{% if tickets %}
