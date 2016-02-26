@@ -27,11 +27,11 @@ var getComments = function(page){
 		west.toString();
 	};*/
 	$.get(url, function(data, status){
-		// save comments to localstorage
-		localStorage.removeItem('data');
-		localStorage.setItem('data', JSON.stringify(data));
 		renderComments(data);
 		addPaginationNav(data, page);
+	}).fail(function(){
+		// get last page if fail
+		getComments();
 	});
 
 };
@@ -69,6 +69,20 @@ var addPaginationNav = function(data, page){
 	});
 };
 
+var deleteComment = function(id){
+	var url = apiUrl + id.toString();
+	$.ajax({
+		type: "DELETE",
+		url: url,
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+		},
+		success: function() {
+			getComments(currentPage);
+		},
+	});
+};
+
 var renderComments = function(data){
 	// first get the last comments' page
 	$('.comment').remove();
@@ -76,11 +90,10 @@ var renderComments = function(data){
 	var comments = $('#comments');
 	data['results'].forEach(function(obj){
 		var row = $('<article/>', {
-			'class': 'row comment',
-			'id': obj.id
+			'class': 'row comment'
 		}).appendTo(comments);
 		var panel = $('<div/>', {
-			'class': 'panel panel-default'
+			'class': 'panel panel-primary'
 		}).appendTo(row);
 		var heading = $('<div/>', {
 			'class': 'panel-heading'
@@ -94,6 +107,16 @@ var renderComments = function(data){
 		$('<p/>', {
 			'class': 'text comment-text'
 		}).html(obj.text.replace(/\r\n|\n|\r/gm, '<br />')).appendTo(body);
+		if(user == obj.author){
+			$('<button/>', {
+				'type': 'button',
+				'class': 'btn btn-default pull-right deleteable',
+				'id': obj.id
+			}).html('Видалити').appendTo(heading);
+		};
+	});
+	$('.deleteable').click(function(){
+		deleteComment(parseInt($(this).attr('id')));
 	});
 };
 

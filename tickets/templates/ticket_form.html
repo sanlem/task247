@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+Додати тікет
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'ticket_add' project %}" method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit" class="btn btn-default">Додати</button>
+</form>
+{% endblock %}

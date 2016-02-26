@@ -45,8 +45,14 @@ class Ticket(models.Model):
     priority = models.CharField(max_length=6, choices=PRIORITY_CHOICES,
                                 default=HIGH)
 
+    def save(self, *args, **kwargs):
+        # if ticket has an owner, it's status can only be ACCEPTED or ASSIGNED
+        if self.owner and self.status != self.ACCEPTED:
+            self.status = self.ASSIGNED
+        super(Ticket, self).save(*args, **kwargs)
+
     def __str__(self):
-        return self.project.name + '#' + str(self.project_id) + ': ' + self.name
+        return self.project.name + '#' + str(self.id) + ': ' + self.name
 
 
 class TicketComment(models.Model):

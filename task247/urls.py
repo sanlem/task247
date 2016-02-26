@@ -30,9 +30,10 @@ urlpatterns = [
     url(r'^$', projects.views.index),
     url(r'^projects/$', projects.views.projects_list, name='projects_list'),
     url(r'^projects/(?P<pk>\d+)/$', projects.views.ProjectDetail.as_view(), name='projects_detail'),
+    url(r'^projects/(?P<pk>\d+)/addticket/$', tickets.views.AddTicketView.as_view(), name='ticket_add'),
     url(r'^tickets/(?P<pk>\d+)/$', tickets.views.TicketDetail.as_view(), name='ticket_detail'),
-    url(r'^tickets/(?P<ticket>\d+)/comment/add/$',
-        tickets.views.AddComment.as_view(), name='ticket_comment_add'),
+    url(r'^tickets/(?P<pk>\d+)/accept/$', tickets.views.accept_ticket, name='ticket_accept'),
+    url(r'^tickets/(?P<pk>\d+)/close/$', tickets.views.close_ticket, name='ticket_close'),
 
     url(r'^login/', auth_views.login, {'template_name': 'login.html'},
         name="login"),

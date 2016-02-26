@@ -4,7 +4,7 @@ from tickets.models import Ticket, TicketComment
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from tickets.forms import TicketCommentForm
+from tickets.forms import TicketForm, TicketCommentForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from rest_framework import viewsets, filters
@@ -12,6 +12,8 @@ import django_filters
 from tickets.serializers import CommentSerializer
 from django.conf import settings
 from tickets.permissions import IsAuthorOrReadOnly
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 class TicketDetail(LoginRequiredMixin, DetailView):
@@ -45,17 +47,41 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-class AddComment(LoginRequiredMixin, CreateView):
+class AddTicketView(LoginRequiredMixin, CreateView):
     
     permission_classes = (IsAuthorOrReadOnly,)
-    model = TicketComment
-    form_class = TicketCommentForm
-    template_name = 'ticketcomment_form.html'
+    model = Ticket
+    form_class = TicketForm
+    template_name = 'ticket_form.html'
     login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super(AddTicketView, self).get_context_data(**kwargs)
+        context['project'] = self.kwargs['pk']
+        return context
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.author = self.request.user
-        self.object.ticket = get_object_or_404(Ticket, pk=self.kwargs['ticket'])
+        self.object.project = get_object_or_404(Project, pk=self.kwargs['pk'])
         self.object.save()
-        return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': self.kwargs['ticket']}))
+        pk = self.object.id
+        messages.success(self.request, 'Тікет успішно створено.')
+        return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))
+
+@login_required(login_url = reverse_lazy('login'))
+def accept_ticket(request, pk):
+    ticket = get_object_or_404(Ticket, pk=pk)
+    ticket.status = ticket.ACCEPTED
+    ticket.owner = request.user
+    ticket.save()
+    messages.success(request, 'Ви прийняли тікет.')
+    return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))
+
+@login_required(login_url = reverse_lazy('login'))
+def close_ticket(request, pk):
+    ticket = get_object_or_404(Ticket, pk=pk)
+    ticket.status = ticket.CLOSED
+    ticket.owner = None
+    ticket.save()
+    messages.success(request, 'Ви закрили тікет.')
+    return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))

@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
+{% block title %}
+{{ object }}
+{% endblock %}
 {% load staticfiles %}
 {% block extra_head %}
 <script>
 	var apiUrl = "{% url 'comment-list' %}";
 	var ticketId = {{ object.id }};
 	var pageSize = {{ page_size }};
+	var user = '{{ user.username }}';
 </script>
 <script src="{% static 'js/comment.js' %}"></script>
-<style type='text/css'>
-	p.comment-text: {
-		white-space: pre-line;
-	}
-</style>
 {% endblock %}
 
 {% block content %}
 <section id="ticket">
 	<article class="row">
-		<div class="panel panel-default">
+		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title">{{ object.name }}</h3>
+				{% if object.status != 'Accepted' %}
+				<a href="{% url 'ticket_accept' object.id %}" class="btn btn-success pull-right" role="button">Прийняти</a>
+				{% elif object.owner == request.user %}
+				<a href="{% url 'ticket_close' object.id %}" class="btn btn-danger pull-right" role="button">Закрити</a>
+				{% endif %}
 			</div>
 			<div class="panel-body">
 				<p class="text">Пріоритет: {{ object.priority }}</p>
@@ -62,7 +66,7 @@
 		</article>
 		<form id="commentForm" class="form-horizontal">
 			{% csrf_token %}
-			{{ form }}
+			{{ form.as_p }}
 			<button id="commentSubmit" type="button" class="btn btn-success">Відправити</button>
 		</form>
 	</section>

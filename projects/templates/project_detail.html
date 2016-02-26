@@ -1,25 +1,34 @@
 {% extends 'base.html' %}
 
+{% block title %}
+{{ object.name }}
+{% endblock %}
+
 {% block content %}
 
-	<article class="row">
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title">{{ object.name }}</h3>
-  			</div>
-  			<div class="panel-body">
-    			<p class="text">Клієнт: {{ object.customer }}</p>
-    			<p class="text">Дедлайн: {{ object.deadline }}</p>
-    			<p class="text">Репозиторій: {{ object.repo_url }}</p>
-    			<hr>
-    			<p class="text">{{ object.description | linebreaks }}</p>
-  			</div>
+<article class="row">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{ object.name }}</h3>
 		</div>
-	</article>
-	<hr>
-	{% if tickets %}
+		<div class="panel-body">
+			<p class="text">Клієнт: {{ object.customer }}</p>
+			<p class="text">Дедлайн: {{ object.deadline }}</p>
+			<p class="text">Репозиторій: {{ object.repo_url }}</p>
+			<hr>
+			<p class="text">{{ object.description | linebreaks }}</p>
+		</div>
+	</div>
+</article>
+
+{% if tickets %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Тікети</h3>
+	</div>
+	<div class="panel panel-body">
 		<article class="row">
-			<table class="table table-hover">
+			<table class="table table-hover table-striped">
 				<th class="row">
 					<td class="col-xs-4">
 						Name
@@ -37,7 +46,7 @@
 						Owner
 					</td>
 				</th>
-			{% for t in tickets %}
+				{% for t in tickets %}
 				<tr class="row">
 					<td class="col-xs-4">
 						<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
@@ -55,14 +64,16 @@
 						{{ t.owner }}
 					</td>
 				</tr>
-			{% endfor %}
+				{% endfor %}
 			</table>
 		</article>
-	{% else %}
-		<article class="row">
-			<p class="text">No tickets.</p>
-		</article>
-	{% endif %}
-	<a href="">Додати тікет</a>
+	</div>
+</div>
+{% else %}
+<article class="row">
+	<p class="text">No tickets.</p>
+</article>
+{% endif %}
+<a href="{% url 'ticket_add' object.id %}">Додати тікет</a>
 
 {% endblock %}
