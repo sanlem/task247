@@ -17,14 +17,20 @@
 			<p class="text">Репозиторій: {{ object.repo_url }}</p>
 			<hr>
 			<p class="text">{{ object.description | linebreaks }}</p>
+			<p class="text">Розробники:</p>
+			<p class="text">
+				{% for dev in object.developers.all %}
+					<a href="{% url 'profile' dev %}">{{ dev }}</a>
+				{% endfor %}
+			</p>
 		</div>
 	</div>
 </article>
 
-{% if tickets %}
+{% if accepted_tickets %}
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">Тікети</h3>
+		<h3 class="panel-title">Працюють над:</h3>
 	</div>
 	<div class="panel panel-body">
 		<article class="row">
@@ -46,7 +52,7 @@
 						Owner
 					</td>
 				</th>
-				{% for t in tickets %}
+				{% for t in accepted_tickets %}
 				<tr class="row">
 					<td class="col-xs-4">
 						<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
@@ -61,7 +67,7 @@
 						{{ t.status }}
 					</td>
 					<td class="col-xs-2">
-						<a href="{% url 'profile' object.owner.id %}">{{ t.owner }}</a>
+						<a href="{% url 'profile' t.owner %}">{{ t.owner }}</a>
 					</td>
 				</tr>
 				{% endfor %}
@@ -71,9 +77,172 @@
 </div>
 {% else %}
 <article class="row">
-	<p class="text">No tickets.</p>
+	<h3 class="text">Ніхто не працює над проектом :-(</h3>
 </article>
 {% endif %}
+
+{% if assigned_tickets %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Присвоєні тікети:</h3>
+	</div>
+	<div class="panel panel-body">
+		<article class="row">
+			<table class="table table-hover table-striped">
+				<th class="row">
+					<td class="col-xs-4">
+						Name
+					</td>
+					<td class="col-xs-2">
+						Priority
+					</td>
+					<td class="col-xs-2">
+						Goal
+					</td>
+					<td class="col-xs-2">
+						Status
+					</td>
+					<td class="col-xs-2">
+						Owner
+					</td>
+				</th>
+				{% for t in assigned_tickets %}
+				<tr class="row">
+					<td class="col-xs-4">
+						<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+					</td>
+					<td class="col-xs-2">
+						{{ t.priority }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.goal }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.status }}
+					</td>
+					<td class="col-xs-2">
+						<a href="{% url 'profile' t.owner %}">{{ t.owner }}</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</article>
+	</div>
+</div>
+{% else %}
+<article class="row">
+	<h3 class="text">Немає присвоєних тікетів.</h3>
+</article>
+{% endif %}
+
+{% if unassigned_tickets %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Вільні тікети</h3>
+	</div>
+	<div class="panel panel-body">
+		<article class="row">
+			<table class="table table-hover table-striped">
+				<th class="row">
+					<td class="col-xs-4">
+						Name
+					</td>
+					<td class="col-xs-2">
+						Priority
+					</td>
+					<td class="col-xs-2">
+						Goal
+					</td>
+					<td class="col-xs-2">
+						Status
+					</td>
+					<td class="col-xs-2">
+						Owner
+					</td>
+				</th>
+				{% for t in unassigned_tickets %}
+				<tr class="row">
+					<td class="col-xs-4">
+						<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+					</td>
+					<td class="col-xs-2">
+						{{ t.priority }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.goal }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.status }}
+					</td>
+					<td class="col-xs-2">
+						<a href="{% url 'profile' t.owner %}">{{ t.owner }}</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</article>
+	</div>
+</div>
+{% else %}
+<article class="row">
+	<h3 class="text">Немає вільних тікетів.</h3>
+</article>
+{% endif %}
+
+{% if closed_tickets %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Завершені тікети:</h3>
+	</div>
+	<div class="panel panel-body">
+		<article class="row">
+			<table class="table table-hover table-striped">
+				<th class="row">
+					<td class="col-xs-4">
+						Name
+					</td>
+					<td class="col-xs-2">
+						Priority
+					</td>
+					<td class="col-xs-2">
+						Goal
+					</td>
+					<td class="col-xs-2">
+						Status
+					</td>
+					<td class="col-xs-2">
+						Owner
+					</td>
+				</th>
+				{% for t in closed_tickets %}
+				<tr class="row">
+					<td class="col-xs-4">
+						<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+					</td>
+					<td class="col-xs-2">
+						{{ t.priority }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.goal }}
+					</td>
+					<td class="col-xs-2">
+						{{ t.status }}
+					</td>
+					<td class="col-xs-2">
+						<a href="{% url 'profile' t.owner %}">{{ t.owner }}</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</article>
+	</div>
+</div>
+{% else %}
+<article class="row">
+	<h3 class="text">Жоден тікет не був завершений.</h3>
+</article>
+{% endif %}
+
 <a href="{% url 'ticket_add' object.id %}">Додати тікет</a>
 
 {% endblock %}

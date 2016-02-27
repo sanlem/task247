@@ -3,7 +3,7 @@
 
 {% block title %}
 
-{% if user == object %}
+{% if request.user == object %}
 Мій профіль
 {% else %}
 Профіль користувача

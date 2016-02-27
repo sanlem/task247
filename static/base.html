@@ -38,7 +38,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
-          <p class="navbar-text">Привіт, {{ user.username}}!</p>
+          <p class="navbar-text">Привіт, {{ request.user.username}}!</p>
           <li><a href="{% url 'logout' %}">Вийти</a></li>
           {% else %}
           <li><a href="{% url 'register' %}">Реєстрація</a></li>
@@ -52,14 +52,20 @@
   <section class="container">
     <article>
       {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
-        {% endfor %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+      {% endfor %}
       {% endif %}
     </article>
     {% block content %}
     {% endblock %}
   </section>
+
+  <footer class="footer">
+    <div class="container">
+    <p class="text-muted">Футер.</p>
+    </div>
+  </footer>
 
 </body>
 </html>

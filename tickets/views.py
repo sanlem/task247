@@ -49,7 +49,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class AddTicketView(LoginRequiredMixin, CreateView):
     
-    permission_classes = (IsAuthorOrReadOnly,)
     model = Ticket
     form_class = TicketForm
     template_name = 'ticket_form.html'
@@ -74,6 +73,8 @@ def accept_ticket(request, pk):
     ticket.status = ticket.ACCEPTED
     ticket.owner = request.user
     ticket.save()
+    if ticket.project not in request.user.project_set.all():
+        ticket.project.developers.add(request.user)
     messages.success(request, 'Ви прийняли тікет.')
     return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))
 
@@ -81,7 +82,6 @@ def accept_ticket(request, pk):
 def close_ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
     ticket.status = ticket.CLOSED
-    ticket.owner = None
     ticket.save()
     messages.success(request, 'Ви закрили тікет.')
     return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))

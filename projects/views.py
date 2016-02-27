@@ -24,5 +24,9 @@ class ProjectDetail(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetail, self).get_context_data(**kwargs)
-        context['tickets'] = Ticket.objects.filter(project=self.object)
+        tickets = Ticket.objects.filter(project=self.object)
+        context['accepted_tickets'] = tickets.filter(status=Ticket.ACCEPTED)
+        context['assigned_tickets'] = tickets.filter(status=Ticket.ASSIGNED)
+        context['unassigned_tickets'] = tickets.filter(status=Ticket.UNASSIGNED)
+        context['closed_tickets'] = tickets.filter(status=Ticket.CLOSED)
         return context

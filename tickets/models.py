@@ -52,7 +52,7 @@ class Ticket(models.Model):
         super(Ticket, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.project.name + '#' + str(self.id) + ': ' + self.name
+        return self.project.name + '#' + self.name
 
 
 class TicketComment(models.Model):
