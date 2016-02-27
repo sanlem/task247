@@ -29,7 +29,7 @@
 				<p class="text">Пріоритет: {{ object.priority }}</p>
 				<p class="text">Тип: {{ object.goal }}</p>
 				<p class="text">Статус: {{ object.status }}</p>
-				<p class="text">Власник: <a href="{% url 'profile' object.owner.id %}">{{ object.owner }}</a></p>
+				<p class="text">Власник: <a href="{% url 'profile' object.owner %}">{{ object.owner }}</a></p>
 				<hr>
 				<p class="text">{{ object.description | linebreaks }}</p>
 			</div>

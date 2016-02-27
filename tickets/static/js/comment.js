@@ -100,7 +100,7 @@ var renderComments = function(data){
 		}).appendTo(panel);
 		$('<h3/>', {
 			'class': 'panel-title'
-		}).html(obj.author).appendTo(heading);
+		}).html('<a href="/users/' + obj.author + '">' + obj.author + '</a>').appendTo(heading);
 		var body = $('<div/>', {
 			'class': 'panel-body'
 		}).appendTo(panel);
