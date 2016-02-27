@@ -61,7 +61,7 @@
 						{{ t.status }}
 					</td>
 					<td class="col-xs-2">
-						{{ t.owner }}
+						<a href="{% url 'profile' object.owner.id %}">{{ t.owner }}</a>
 					</td>
 				</tr>
 				{% endfor %}

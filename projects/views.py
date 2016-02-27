@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from projects.models import Project
 from tickets.models import Ticket
 from django.views.generic.detail import DetailView

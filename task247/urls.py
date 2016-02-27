@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^logout/', auth_views.logout, {'next_page': '/'}, name="logout"),
     url(r'^register/$', users.views.RegistrationView.as_view(), name='register'),
     url(r'^api/v1/', include(router.urls)),
+    url(r'^users/(?P<username>[\w.@+-]+)$', users.views.UserDetailView.as_view(), name='profile'),
 ]
 
 if settings.DEBUG:
