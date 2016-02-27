@@ -22,6 +22,8 @@ import projects.views
 import tickets.views
 import users.views
 from rest_framework import routers
+from django.conf.urls.static import static
+
 
 router = routers.SimpleRouter()
 router.register(r'comments', tickets.views.CommentViewSet, 'comment')
@@ -35,6 +37,7 @@ urlpatterns = [
     url(r'^tickets/(?P<pk>\d+)/$', tickets.views.TicketDetail.as_view(), name='ticket_detail'),
     url(r'^tickets/(?P<pk>\d+)/accept/$', tickets.views.accept_ticket, name='ticket_accept'),
     url(r'^tickets/(?P<pk>\d+)/close/$', tickets.views.close_ticket, name='ticket_close'),
+    url(r'^tickets/(?P<pk>\d+)/attach_file/$', tickets.views.AttachmentCreateView.as_view(), name='ticket_attach'),
 
     url(r'^login/', auth_views.login, {'template_name': 'login.html'},
         name="login"),
@@ -42,7 +45,7 @@ urlpatterns = [
     url(r'^register/$', users.views.RegistrationView.as_view(), name='register'),
     url(r'^api/v1/', include(router.urls)),
     url(r'^users/(?P<username>[\w.@+-]+)$', users.views.UserDetailView.as_view(), name='profile'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += [

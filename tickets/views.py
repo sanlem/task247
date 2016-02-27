@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from projects.models import Project
-from tickets.models import Ticket, TicketComment
+from tickets.models import Ticket, TicketComment, Attachment
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from tickets.forms import TicketForm, TicketCommentForm
+from tickets.forms import TicketForm, TicketCommentForm, AttachmentForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from rest_framework import viewsets, filters
@@ -24,6 +24,7 @@ class TicketDetail(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(TicketDetail, self).get_context_data(**kwargs)
+        context['files'] = Attachment.objects.filter(ticket=self.object)
         context['comments'] = TicketComment.objects.filter(ticket=self.object)
         context['page_size'] = settings.REST_FRAMEWORK['PAGE_SIZE']
         context['form'] = TicketCommentForm()
@@ -85,3 +86,24 @@ def close_ticket(request, pk):
     ticket.save()
     messages.success(request, 'Ви закрили тікет.')
     return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))
+
+
+class AttachmentCreateView(LoginRequiredMixin, CreateView):
+    model = Attachment
+    form_class = AttachmentForm
+    template_name = 'attachment_form.html'
+    login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super(AttachmentCreateView, self).get_context_data(**kwargs)
+        context['ticket'] = self.kwargs['pk']
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.ticket = get_object_or_404(Ticket, pk=self.kwargs['pk'])
+        self.object.author = self.request.user
+        self.object.save()
+        pk = self.object.id
+        messages.success(self.request, 'Файл успішно створено.')
+        return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))

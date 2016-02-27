@@ -59,3 +59,10 @@ class TicketComment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     text = models.TextField(max_length=300)
     ticket = models.ForeignKey(Ticket)
+
+
+class Attachment(models.Model):
+    attachment = models.FileField(upload_to='documents/%Y/%m/%d')
+    ticket = models.ForeignKey(Ticket)
+    name = models.CharField(max_length=30)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)

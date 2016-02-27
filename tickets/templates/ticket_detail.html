@@ -36,6 +36,13 @@
 		</div>
 	</article>
 </section>
+<section>
+	{% for file in files %}
+	<a href="{{ file.attachment.url }}">{{ file.name }}</a>
+	{% endfor %}
+	<hr>
+	<a href="{% url 'ticket_attach' object.id %}">Додати файл</a>
+</section>
 <section id="comments">
 <!--{% if comments %}
 		{% for c in comments %}

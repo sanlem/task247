@@ -1,5 +1,5 @@
 from django import forms
-from tickets.models import Ticket, TicketComment
+from tickets.models import Ticket, TicketComment, Attachment
 
 
 class TicketCommentForm(forms.ModelForm):
@@ -27,3 +27,11 @@ class TicketForm(forms.ModelForm):
                     'class': 'form-control'
                 })	
 	
+
+class AttachmentForm(forms.ModelForm):
+    class Meta:
+        model = Attachment
+        fields = ['attachment', 'name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
