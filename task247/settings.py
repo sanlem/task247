@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters',
     'projects',
     'tickets',
+    'users',
 ]
 
 MIDDLEWARE_CLASSES = [
