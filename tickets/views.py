@@ -7,9 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from tickets.forms import TicketForm, TicketCommentForm, AttachmentForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, generics
 import django_filters
-from tickets.serializers import CommentSerializer
+from tickets.serializers import CommentSerializer, AttachmentSerializer
 from django.conf import settings
 from tickets.permissions import IsAuthorOrReadOnly
 from django.contrib.auth.decorators import login_required
@@ -104,6 +104,21 @@ class AttachmentCreateView(LoginRequiredMixin, CreateView):
         self.object.ticket = get_object_or_404(Ticket, pk=self.kwargs['pk'])
         self.object.author = self.request.user
         self.object.save()
-        pk = self.object.id
+        pk = self.kwargs['pk']
         messages.success(self.request, 'Файл успішно створено.')
         return HttpResponseRedirect(reverse('ticket_detail', kwargs={'pk': pk}))
+
+
+class AttachmentFilter(filters.FilterSet):
+    newer_than = django_filters.NumberFilter(name='id', lookup_type='gt')
+    class Meta:
+        model = Attachment
+        fields = ['ticket', 'newer_than']
+
+
+class AttachmentReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    
+    serializer_class = AttachmentSerializer
+    pagination_class = None
+    queryset = Attachment.objects.all()
+    filter_class = AttachmentFilter

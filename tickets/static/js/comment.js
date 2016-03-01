@@ -22,10 +22,6 @@ var getComments = function(page){
 		page = page.toString();
 	};
 	url += '&page=' + page;
-	/*if(newest){
-		url += '&newer_than=' + ne
-		west.toString();
-	};*/
 	$.get(url, function(data, status){
 		renderComments(data);
 		addPaginationNav(data, page);
@@ -34,6 +30,29 @@ var getComments = function(page){
 		getComments();
 	});
 
+};
+
+var renderAttachments = function(data){
+    data.forEach(function(obj){
+    	var attachments = $('#files');
+    	var li = $('<li/>', {
+    		'class': 'list-group-item',
+    	}).appendTo(attachments);
+    	$('<a/>', {
+    		'href': obj.url,
+    		'html': obj.name,
+    	}).appendTo(li);
+    });
+};
+
+var getAttachments = function(){
+	var url = attachmentUrl + '?ticket=' + ticketId.toString() + '&newer_than=' + newestId.toString();
+	$.get(url, function(data, status){
+		if(data.length > 0){
+			newestId = data[data.length - 1].id;
+			renderAttachments(data);
+		};
+	});
 };
 
 var addPaginationNav = function(data, page){
@@ -127,11 +146,11 @@ var handleComments = function(){
 
 $(document).ready(function(){
 	getComments();
-	// data = JSON.parse(localStorage.getItem('data'));
 	var msg = $('#message');
 	var msgContainer = $('#messages');
 	msgContainer.hide();
 	newestId = 0;
+	getAttachments();
 	$('#commentSubmit').click(function(){
 		var textInput = $('#id_text');
 		$.ajax({
@@ -162,4 +181,5 @@ $(document).ready(function(){
 		});
 	});
 	setInterval(handleComments, 1000);
+	setInterval(getAttachments, 5000);
 });

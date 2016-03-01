@@ -27,6 +27,8 @@ from django.conf.urls.static import static
 
 router = routers.SimpleRouter()
 router.register(r'comments', tickets.views.CommentViewSet, 'comment')
+router.register(r'attachments', tickets.views.AttachmentReadOnlyViewSet, 'attachment')
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

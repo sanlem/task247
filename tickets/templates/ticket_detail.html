@@ -6,6 +6,7 @@
 {% block extra_head %}
 <script>
 	var apiUrl = "{% url 'comment-list' %}";
+	var attachmentUrl = "{% url 'attachment-list' %}";
 	var ticketId = {{ object.id }};
 	var pageSize = {{ page_size }};
 	var user = '{{ user.username }}';
@@ -37,45 +38,34 @@
 	</article>
 </section>
 <section>
-	{% for file in files %}
-	<a href="{{ file.attachment.url }}">{{ file.name }}</a>
-	{% endfor %}
+	<h3 class="text">Файли</h3>
+	<ul class="list-group" id="files">
+		<!--{% for file in files %}
+			<li class="list-group-item"><a href="{{ file.attachment.url }}" target="_blank">{{ file.name }}</a></li>
+		{% endfor %}-->
+	</ul>
 	<hr>
 	<a href="{% url 'ticket_attach' object.id %}">Додати файл</a>
 </section>
 <section id="comments">
-<!--{% if comments %}
-		{% for c in comments %}
-			<hr>
-			<article class="row comment" id="{{ c.id }}">
-				<div class="panel panel-default">
-  					<div class="panel-heading">
-    					<h3 class="panel-title">{{ c.author }}</h3>
-  					</div>
-  					<div class="panel-body">
-						<p class="text">{{ c.text | linebreaks }}</p>
-  					</div>
-  				</div>
-			</article>
-		{% endfor %}
-		{% endif %} -->
-	</section>
-	<section class="row">
-		<nav id="pageNav">
-			<ul id="pages" class="pagination">
-			</ul>
-		</nav>
-	</section>
-	<hr>
-	<section>
-		<article id="messages">
-			<div class="alert alert-danger" role="alert"><p class="text" id="message"></p></div>
-		</article>
-		<form id="commentForm" class="form-horizontal">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button id="commentSubmit" type="button" class="btn btn-success">Відправити</button>
-		</form>
-	</section>
+	<h3 class="text">Коментарі</h3>
+</section>
+<section class="row">
+	<nav id="pageNav">
+		<ul id="pages" class="pagination">
+		</ul>
+	</nav>
+</section>
+<hr>
+<section>
+	<article id="messages">
+		<div class="alert alert-danger" role="alert"><p class="text" id="message"></p></div>
+	</article>
+	<form id="commentForm" class="form-horizontal">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button id="commentSubmit" type="button" class="btn btn-success">Відправити</button>
+	</form>
+</section>
 
-	{% endblock %}
+{% endblock %}
