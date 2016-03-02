@@ -10,6 +10,7 @@ class Ticket(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     closed_at = models.DateTimeField(blank=True, null=True)
+    points = models.IntegerField(default=0)
     
     ASSIGNED = 'Assigned'
     ACCEPTED = 'Accepted'
