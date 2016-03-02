@@ -39,7 +39,10 @@
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
           <p class="navbar-text">Привіт, {{ request.user.username}}!</p>
-          <li><a href="{% url 'logout' %}">Вийти</a></li>
+              {% if user.is_staff %}
+              <li><a href="{% url 'admin:index' %}">Адмінка</a></li>
+              <li><a href="{% url 'logout' %}">Вийти</a></li>
+              {% endif %}
           {% else %}
           <li><a href="{% url 'register' %}">Реєстрація</a></li>
           <li><a href="{% url 'login' %}">Login</a></li>

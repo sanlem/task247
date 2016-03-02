@@ -21,6 +21,7 @@ from django.contrib.auth import views as auth_views
 import projects.views
 import tickets.views
 import users.views
+from django.views.generic import RedirectView
 from rest_framework import routers
 from django.conf.urls.static import static
 
@@ -32,7 +33,7 @@ router.register(r'attachments', tickets.views.AttachmentReadOnlyViewSet, 'attach
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', projects.views.index),
+    url(r'^$', RedirectView.as_view(url='/projects', permanent=False)),
     url(r'^projects/$', projects.views.projects_list, name='projects_list'),
     url(r'^projects/(?P<pk>\d+)/$', projects.views.ProjectDetail.as_view(), name='projects_detail'),
     url(r'^projects/(?P<pk>\d+)/addticket/$', tickets.views.AddTicketView.as_view(), name='ticket_add'),
