@@ -147,17 +147,14 @@
 					<td class="col-xs-4">
 						Name
 					</td>
-					<td class="col-xs-2">
+					<td class="col-xs-3">
 						Priority
 					</td>
-					<td class="col-xs-2">
+					<td class="col-xs-3">
 						Goal
 					</td>
 					<td class="col-xs-2">
 						Status
-					</td>
-					<td class="col-xs-2">
-						Owner
 					</td>
 				</th>
 				{% for t in unassigned_tickets %}
@@ -165,17 +162,14 @@
 					<td class="col-xs-4">
 						<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
 					</td>
-					<td class="col-xs-2">
+					<td class="col-xs-3">
 						{{ t.priority }}
 					</td>
-					<td class="col-xs-2">
+					<td class="col-xs-3">
 						{{ t.goal }}
 					</td>
 					<td class="col-xs-2">
 						{{ t.status }}
-					</td>
-					<td class="col-xs-2">
-						<a href="{% url 'profile' t.owner %}">{{ t.owner }}</a>
 					</td>
 				</tr>
 				{% endfor %}

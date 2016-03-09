@@ -8,6 +8,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from tickets.models import Ticket
+from django.db.models import Sum, Max
 
 
 class RegistrationView(CreateView):
@@ -25,6 +26,11 @@ class RegistrationView(CreateView):
         return render(self.request, 'registration_success.html', {'username': user.username})
 
 
+class Earning:
+    project = None
+    earned = None
+
+
 class UserDetailView(LoginRequiredMixin, DetailView):
     
     model = get_user_model()
@@ -37,14 +43,27 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
-        projects = []
-        tickets = Ticket.objects.filter(owner=self.object).order_by('created_at')
+        projects = self.object.project_set.annotate(total_points=Sum('ticket__points'))
+        earned = []
+        # shit here
+        for proj in projects:
+            points = proj.total_points
+            earning = Earning()
+            t = proj.ticket_set.filter(status=Ticket.CLOSED,
+                                       owner=self.object).aggregate(Sum('points'))
+            try:
+                earning.earned = (t['points__sum'] / proj.total_points) * proj.cost
+            except Exception:
+                earning.earned = 0
+            earning.project = proj
+            earned.append(earning)
+        tickets = self.object.ticket_set.filter(owner=self.object).order_by('created_at')
         assigned = tickets.filter(status=Ticket.ASSIGNED)
         accepted = tickets.filter(status=Ticket.ACCEPTED)
-        for ticket in tickets:
-            if ticket.project not in projects:
-                projects.append(ticket.project)
+        closed = tickets.filter(status=Ticket.CLOSED)
+        points = {}
         context['assigned_tickets'] = assigned
         context['accepted_tickets'] = accepted
-        context['projects'] = projects
+        context['closed_tickets'] = closed
+        context['projects'] = earned
         return context

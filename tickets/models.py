@@ -47,8 +47,8 @@ class Ticket(models.Model):
                                 default=HIGH)
 
     def save(self, *args, **kwargs):
-        # if ticket has an owner, it's status can only be ACCEPTED or ASSIGNED
-        if self.owner and self.status != self.ACCEPTED:
+        # if ticket has an owner, it's status can be ACCEPTED or ASSIGNED or CLOSED
+        if self.owner and self.status == self.UNASSIGNED:
             self.status = self.ASSIGNED
         super(Ticket, self).save(*args, **kwargs)
 

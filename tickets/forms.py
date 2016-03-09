@@ -16,7 +16,7 @@ class TicketForm(forms.ModelForm):
         widgets = {
         	'description': forms.Textarea(attrs={'rows': 5})
         }
-        fields = ['name', 'owner', 'goal', 'status', 'priority', 'description']
+        fields = ['name', 'points', 'owner', 'goal', 'status', 'priority', 'description']
 
     def __init__(self, *args, **kwargs):
         super(TicketForm, self).__init__(*args, **kwargs)
