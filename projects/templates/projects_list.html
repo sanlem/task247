@@ -17,6 +17,7 @@
 			<p class="text">Клієнт: {{ obj.customer }}</p>
 			<p class="text">Дедлайн: {{ obj.deadline }}</p>
 			<p class="text">Репозиторій: {{ obj.repo_url }}</p>
+			<p class="text">Вартість: {{ obj.cost }}</p>
 			<hr>
 			<p class="text">{{ obj.description | linebreaks }}</p>
 			<a href="{% url 'projects_detail' obj.id %}">Детальніше</a>
