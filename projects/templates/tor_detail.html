@@ -8,7 +8,7 @@
 
 <section class="row">
 	<article class="tor">
-		<h2 class="text">{{ object }}</h2>
+		<h3 class="text">{{ object }}</h3>
 		<p class="text">Файли:</p>
 		{% if object.attachment_set.all %}
 		<ul class="list-group" id="files">
@@ -19,6 +19,8 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
+		<a href="{% url 'projects_detail' object.project.id %}">Перейти до проекту</a>
+		<h2 class="text">Текст:</h2>
 		<p class="text">{{ object.text | linebreaks }}</p>
 	</article>
 </section>
