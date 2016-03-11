@@ -9,6 +9,16 @@
 <section class="row">
 	<article class="tor">
 		<h2 class="text">{{ object }}</h2>
+		<p class="text">Файли:</p>
+		{% if object.attachment_set.all %}
+		<ul class="list-group" id="files">
+			{% for file in object.attachment_set.all %}
+				<li class="list-group-item">
+					<a href="{{ file.attachment.url }}" target="_blank">{{ file.name }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
 		<p class="text">{{ object.text | linebreaks }}</p>
 	</article>
 </section>
