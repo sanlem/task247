@@ -41,6 +41,7 @@ var renderAttachments = function(data){
     	$('<a/>', {
     		'href': obj.url,
     		'html': obj.name,
+    		'target': '_blank',
     	}).appendTo(li);
     });
 };

@@ -18,6 +18,10 @@
 			<p class="text">Вартість: {{ object.cost }}</p>
 			<hr>
 			<p class="text">{{ object.description | linebreaks }}</p>
+			<p class="text">ТЗ:</p>
+			{% for tor in object.tor_set.all %}
+				<p class="text"><a href="{% url 'tor_detail' tor.id %}">{{ tor }}</a></p>
+			{% endfor %}
 			<p class="text">Розробники:</p>
 			<p class="text">
 				{% for dev in object.developers.all %}

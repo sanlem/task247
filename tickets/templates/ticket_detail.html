@@ -34,6 +34,7 @@
 				{% if object.owner %}
 					<p class="text">Власник: <a href="{% url 'profile' object.owner %}">{{ object.owner }}</a></p>
 				{% endif %}
+				<a href="{% url 'projects_detail' object.project.id %}">Перейти до проекту</a>
 				<hr>
 				<p class="text">{{ object.description | linebreaks }}</p>
 			</div>

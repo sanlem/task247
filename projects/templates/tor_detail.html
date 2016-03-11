@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ object }}
+{% endblock %}
+
+{% block content %}
+
+<section class="row">
+	<article class="tor">
+		<h3 class="text">{{ object }}</h3>
+		<p class="text">Файли:</p>
+		{% if object.attachment_set.all %}
+		<ul class="list-group" id="files">
+			{% for file in object.attachment_set.all %}
+				<li class="list-group-item">
+					<a href="{{ file.attachment.url }}" target="_blank">{{ file.name }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<a href="{% url 'projects_detail' object.project.id %}">Перейти до проекту</a>
+		<h2 class="text">Текст:</h2>
+		<p class="text">{{ object.text | linebreaks }}</p>
+	</article>
+</section>
+
+{% endblock %}
