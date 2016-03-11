@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from projects.models import Project
+from projects.models import Project, TOR
 from tickets.models import Ticket
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,3 +30,10 @@ class ProjectDetail(LoginRequiredMixin, DetailView):
         context['unassigned_tickets'] = tickets.filter(status=Ticket.UNASSIGNED)
         context['closed_tickets'] = tickets.filter(status=Ticket.CLOSED)
         return context
+
+
+class TORDetail(LoginRequiredMixin, DetailView):
+    
+    login_url = reverse_lazy('login')
+    template_name = 'tor_detail.html'
+    model = TOR

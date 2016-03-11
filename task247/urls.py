@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^tickets/(?P<pk>\d+)/accept/$', tickets.views.accept_ticket, name='ticket_accept'),
     url(r'^tickets/(?P<pk>\d+)/close/$', tickets.views.close_ticket, name='ticket_close'),
     url(r'^tickets/(?P<pk>\d+)/attach_file/$', tickets.views.AttachmentCreateView.as_view(), name='ticket_attach'),
-
+    url(r'^tor/(?P<pk>\d+)/$', projects.views.TORDetail.as_view(), name='tor_detail'),
     url(r'^login/', auth_views.login, {'template_name': 'login.html'},
         name="login"),
     url(r'^logout/', auth_views.logout, {'next_page': '/'}, name="logout"),

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ object }}
+{% endblock %}
+
+{% block content %}
+
+<section class="row">
+	<article class="tor">
+		<h2 class="text">{{ object }}</h2>
+		<p class="text">{{ object.text | linebreaks }}</p>
+	</article>
+</section>
+
+{% endblock %}
