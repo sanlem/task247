@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from tickets.models import Ticket
 from django.db.models import Sum, Max
+from collections import namedtuple
 
 
 class RegistrationView(CreateView):
@@ -26,9 +27,11 @@ class RegistrationView(CreateView):
         return render(self.request, 'registration_success.html', {'username': user.username})
 
 
-class Earning:
-    project = None
-    earned = None
+# class Earning:
+#     project = None
+#     earned = None
+
+Earning = namedtuple('Earning', ['project', 'earned'])
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -48,14 +51,13 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         # shit here
         for proj in projects:
             points = proj.total_points
-            earning = Earning()
             t = proj.ticket_set.filter(status=Ticket.CLOSED,
                                        owner=self.object).aggregate(Sum('points'))
             try:
-                earning.earned = (t['points__sum'] / proj.total_points) * proj.cost
+                point_sum = (t['points__sum'] / proj.total_points) * proj.cost
             except Exception:
-                earning.earned = 0
-            earning.project = proj
+                point_sum = 0
+            earning = Earning(proj, point_sum)
             earned.append(earning)
         tickets = self.object.ticket_set.filter(owner=self.object).order_by('created_at')
         assigned = tickets.filter(status=Ticket.ASSIGNED)
