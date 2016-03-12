@@ -126,7 +126,7 @@ var renderComments = function(data){
 		}).appendTo(panel);
 		$('<p/>', {
 			'class': 'text comment-text'
-		}).html(obj.text.replace(/\r\n|\n|\r/gm, '<br />')).appendTo(body);
+		}).html(encodeURI(obj.text.replace(/\r\n|\n|\r/gm, '<br />'))).appendTo(body);
 		if(user == obj.author){
 			$('<button/>', {
 				'type': 'button',
