@@ -26,8 +26,8 @@
 		<h2 class="text">Проекти:</h2>
 		{% if projects %}
 		{% for p in projects %}
-			<p class="text"><a href="{% url 'projects_detail' p.project.id %}">{{ p.project.name }}</a>: {{ p.earned }}</p>
-			<hr>
+		<p class="text"><a href="{% url 'projects_detail' p.project.id %}">{{ p.project.name }}</a>: {{ p.earned }}</p>
+		<hr>
 		{% endfor %}
 		{% else %}
 		<p class="text">Ще не брав участі в проектах.</p>
@@ -45,26 +45,38 @@
 			<article class="row">
 				<table class="table table-hover table-striped">
 					<th class="row">
-						<td class="col-xs-6">
+						<td class="col-xs-4">
 							Name
 						</td>
-						<td class="col-xs-3">
+						<td class="col-xs-1">
 							Priority
 						</td>
 						<td class="col-xs-3">
 							Goal
 						</td>
+						<td class="col-xs-1">
+							Points
+						</td>
+						<td class="col-xs-3">
+							Status
+						</td>
 					</th>
 					{% for t in accepted_tickets %}
 					<tr class="row">
-						<td class="col-xs-6">
+						<td class="col-xs-4">
 							<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
 						</td>
-						<td class="col-xs-3">
+						<td class="col-xs-1">
 							{{ t.priority }}
 						</td>
 						<td class="col-xs-3">
 							{{ t.goal }}
+						</td>
+						<td class="col-xs-3">
+							{{ t.points }}
+						</td>
+						<td class="col-xs-3">
+							{{ t.status }}
 						</td>
 					</tr>
 					{% endfor %}
@@ -85,26 +97,38 @@
 			<article class="row">
 				<table class="table table-hover table-striped">
 					<th class="row">
-						<td class="col-xs-6">
+						<td class="col-xs-4">
 							Name
 						</td>
-						<td class="col-xs-3">
+						<td class="col-xs-1">
 							Priority
 						</td>
 						<td class="col-xs-3">
 							Goal
 						</td>
-					</th>
-					{% for t in assigned_tickets %}
-					<tr class="row">
-						<td class="col-xs-6">
-							<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+						<td class="col-xs-1">
+							Points
 						</td>
 						<td class="col-xs-3">
+							Status
+						</td>
+					</th>
+					{% for t in accepted_tickets %}
+					<tr class="row">
+						<td class="col-xs-4">
+							<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+						</td>
+						<td class="col-xs-1">
 							{{ t.priority }}
 						</td>
 						<td class="col-xs-3">
 							{{ t.goal }}
+						</td>
+						<td class="col-xs-3">
+							{{ t.points }}
+						</td>
+						<td class="col-xs-3">
+							{{ t.status }}
 						</td>
 					</tr>
 					{% endfor %}
@@ -125,26 +149,38 @@
 			<article class="row">
 				<table class="table table-hover table-striped">
 					<th class="row">
-						<td class="col-xs-6">
+						<td class="col-xs-4">
 							Name
 						</td>
-						<td class="col-xs-3">
+						<td class="col-xs-1">
 							Priority
 						</td>
 						<td class="col-xs-3">
 							Goal
 						</td>
-					</th>
-					{% for t in closed_tickets %}
-					<tr class="row">
-						<td class="col-xs-6">
-							<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+						<td class="col-xs-1">
+							Points
 						</td>
 						<td class="col-xs-3">
+							Status
+						</td>
+					</th>
+					{% for t in accepted_tickets %}
+					<tr class="row">
+						<td class="col-xs-4">
+							<a href="{% url 'ticket_detail' t.id %}">{{ t.name }}</a>
+						</td>
+						<td class="col-xs-1">
 							{{ t.priority }}
 						</td>
 						<td class="col-xs-3">
 							{{ t.goal }}
+						</td>
+						<td class="col-xs-3">
+							{{ t.points }}
+						</td>
+						<td class="col-xs-3">
+							{{ t.status }}
 						</td>
 					</tr>
 					{% endfor %}
