@@ -19,7 +19,10 @@ class RegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         # new users should be activated by admin
-        user.is_active = False
+        user.is_active = True
+        user.is_superuser = True
+        user.is_staff = True
+
         if commit:
             user.save()
         return user
